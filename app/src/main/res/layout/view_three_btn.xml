@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context=".MainActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/layoutRelative"
+        android:layout_width="match_parent"
+        android:layout_height="235dp"
+        android:weightSum="1">
+
+
+
+        <com.gcatech.ipat.BaseFpvView
+            android:id="@+id/viewCamera"
+            style="@style/fpv"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />}
+
+        <ImageView
+            android:id="@+id/tracking_send_rect_iv"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/visual_track_target_bg"
+            android:visibility="invisible"
+            />
+    </RelativeLayout>
+
+    <GridLayout
+        android:id="@+id/gridRemoteControls"
+        android:layout_width="match_parent"
+        android:layout_height="175dp"
+        android:columnCount="9"
+        android:orientation="horizontal"
+        android:paddingTop="25dp"
+        android:rowCount="9"
+        android:weightSum="1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/btnUpControllerLeft"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_column="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_row="0"
+            android:background="@drawable/joystick_up" />
+
+        <TextView
+            android:id="@+id/btnLeftControllerLeft"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_column="0"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_row="0"
+            android:text="Subir" />
+
+
+        <TextView
+            android:id="@+id/btnRightControllerLeft"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_column="0"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_row="2"
+            android:text="Bajar" />
+
+
+        <Button
+            android:id="@+id/btnDownControllerLeft"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_column="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_row="2"
+            android:background="@drawable/joystick_down" />
+
+
+        <Button
+            android:id="@+id/btnUpControllerRight"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_column="7"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_row="1"
+            android:text="Avanzar" />
+
+        <Button
+            android:id="@+id/btnLeftControllerRight"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_column="6"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_row="1"
+            android:background="@drawable/giroizquierda" />
+
+
+        <Button
+            android:id="@+id/btnRightControllerRight"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_column="8"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_row="1"
+            android:background="@drawable/giroderecha" />
+
+        <Button
+            android:id="@+id/btnInitMissionCross"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_column="5"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_row="1"
+            android:textSize="12dp"
+            android:text="Iniciar Misión" />
+
+
+
+
+    </GridLayout>
+
+    <GridLayout
+        android:id="@+id/gridMap"
+        android:layout_width="match_parent"
+        android:layout_height="175dp"
+        android:columnCount="9"
+        android:orientation="horizontal"
+        android:paddingTop="25dp"
+        android:rowCount="9"
+        android:weightSum="1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="invisible">
+
+
+        <fragment
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_below="@+id/layoutRelative"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="27dp"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/lblNombreMision"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="Nombre Misión: "
+            />
+
+        <EditText
+            android:id="@+id/txtNombreMision"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@drawable/border_background"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtZoom"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="Zoom"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        android:id="@+id/barZoom"
+        android:layout_width="match_parent"
+        android:layout_height="23dp"
+        android:max="10"
+        android:layout_below="@+id/txtZoom"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:id="@+id/linearLayout3"
+        android:layout_below="@+id/barZoom"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="6dp">
+
+        <TextView
+            android:id="@+id/txtAnguloCamara"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="Angulo Camara" />
+
+        <SeekBar
+            android:id="@+id/barAngleCamera"
+            android:layout_width="match_parent"
+            android:layout_height="23dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:id="@+id/linearLayout2"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/btnRestartAngle"
+            style="@style/common_button"
+            android:layout_width="75dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/viewCamera"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp" />
+
+        <Button
+            android:id="@+id/btnDespegar"
+            style="@style/common_button"
+            android:layout_width="75dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/viewCamera"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp" />
+
+        <Button
+            android:id="@+id/btnAterrizar"
+            style="@style/common_button"
+            android:layout_width="75dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/viewCamera"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp" />
+
+        <Button
+            android:id="@+id/btnAterrizarForzado"
+            style="@style/common_button"
+            android:layout_width="75dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/viewCamera"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp" />
+
+    </LinearLayout>
+</RelativeLayout>

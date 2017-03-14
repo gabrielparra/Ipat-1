@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:set="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/listview_subtitle"
+                android:text="Funciones"/>
+
+            <com.gcatech.ipat.ListViewItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                set:list_item_name="@string/item_text_mode_manual"
+                set:sub_Layout="@layout/content_main"
+                set:component_name="@string/component_camera"
+                set:view_name="@string/view_shoot_single_photo">
+            </com.gcatech.ipat.ListViewItem>
+
+            <com.gcatech.ipat.ListViewItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                set:list_item_name="@string/item_text_mode_mission_dot_in_map"
+                set:sub_Layout="@layout/content_main"
+                set:component_name="@string/component_camera"
+                set:view_name="@string/view_mission_mode">
+            </com.gcatech.ipat.ListViewItem>
+
+            <com.gcatech.ipat.ListViewItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                set:list_item_name="@string/item_text_mode_mission_hot_point"
+                set:sub_Layout="@layout/content_main"
+                set:component_name="@string/component_camera"
+                set:view_name="@string/view_mission_hotpoint">
+            </com.gcatech.ipat.ListViewItem>
+
+            <com.gcatech.ipat.ListViewItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                set:list_item_name="@string/item_text_mode_mission_area_selected"
+                set:sub_Layout="@layout/content_main"
+                set:component_name="@string/component_camera"
+                set:view_name="@string/view_mission_tracking">
+            </com.gcatech.ipat.ListViewItem>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
