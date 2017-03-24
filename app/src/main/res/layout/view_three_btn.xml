@@ -9,50 +9,75 @@
     android:weightSum="1"
     tools:context=".MainActivity">
 
-
     <RelativeLayout
         android:id="@+id/layoutRelative"
         android:layout_width="match_parent"
         android:layout_height="235dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:weightSum="1">
-
 
 
         <com.gcatech.ipat.BaseFpvView
             android:id="@+id/viewCamera"
             style="@style/fpv"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />}
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <SeekBar
+                android:id="@+id/barAngleCamera"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:rotation="270" />
+
+            <SeekBar
+                android:id="@+id/barZoom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:max="10"
+                android:rotation="270"
+
+                />
+        </com.gcatech.ipat.BaseFpvView>
 
         <ImageView
             android:id="@+id/tracking_send_rect_iv"
             android:layout_width="150dp"
             android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:scaleType="fitXY"
             android:src="@drawable/visual_track_target_bg"
-            android:visibility="invisible"
-            />
+            android:visibility="invisible" />
+
+
+
     </RelativeLayout>
 
     <GridLayout
         android:id="@+id/gridRemoteControls"
         android:layout_width="match_parent"
-        android:layout_height="175dp"
+        android:layout_height="190dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:columnCount="9"
         android:orientation="horizontal"
         android:paddingTop="25dp"
         android:rowCount="9"
-        android:weightSum="1"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:weightSum="1">
 
         <Button
             android:id="@+id/btnUpControllerLeft"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_column="1"
@@ -64,8 +89,8 @@
 
         <TextView
             android:id="@+id/btnLeftControllerLeft"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_column="0"
@@ -92,8 +117,8 @@
 
         <Button
             android:id="@+id/btnDownControllerLeft"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_column="1"
@@ -106,8 +131,8 @@
 
         <Button
             android:id="@+id/btnUpControllerRight"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_column="7"
@@ -115,7 +140,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="0dp"
             android:layout_row="1"
-            android:text="Avanzar" />
+            android:text="A" />
 
         <Button
             android:id="@+id/btnLeftControllerRight"
@@ -146,8 +171,8 @@
 
         <Button
             android:id="@+id/btnInitMissionCross"
-            android:layout_width="80dp"
-            android:layout_height="60dp"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_column="5"
@@ -155,10 +180,8 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="0dp"
             android:layout_row="1"
-            android:textSize="12dp"
-            android:text="Iniciar Misión" />
-
-
+            android:text="Iniciar Misión"
+            android:textSize="12dp" />
 
 
     </GridLayout>
@@ -167,77 +190,68 @@
         android:id="@+id/gridMap"
         android:layout_width="match_parent"
         android:layout_height="175dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:columnCount="9"
         android:orientation="horizontal"
         android:paddingTop="25dp"
         android:rowCount="9"
-        android:weightSum="1"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        android:weightSum="1">
 
 
         <fragment
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="188dp" />
     </GridLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        android:layout_below="@+id/layoutRelative"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/layoutRelative"
         android:layout_marginTop="27dp"
-        android:id="@+id/linearLayout">
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/lblNombreMision"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:text="Nombre Misión: "
-            />
+            android:text="Nombre Misión: " />
 
         <EditText
             android:id="@+id/txtNombreMision"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:background="@drawable/border_background"/>
+            android:background="@drawable/border_background" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/txtZoom"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:text="Zoom"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <SeekBar
-        android:id="@+id/barZoom"
-        android:layout_width="match_parent"
-        android:layout_height="23dp"
-        android:max="10"
-        android:layout_below="@+id/txtZoom"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:orientation="vertical"
-        android:weightSum="1"
-        android:id="@+id/linearLayout3"
-        android:layout_below="@+id/barZoom"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="6dp">
+        android:layout_below="@+id/linearLayout"
+        android:text="Zoom" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/txtZoom"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/txtAnguloCamara"
@@ -245,22 +259,18 @@
             android:layout_height="20dp"
             android:text="Angulo Camara" />
 
-        <SeekBar
-            android:id="@+id/barAngleCamera"
-            android:layout_width="match_parent"
-            android:layout_height="23dp" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        android:id="@+id/linearLayout2"
-        android:layout_below="@+id/linearLayout3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout3"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <Button
             android:id="@+id/btnRestartAngle"
@@ -311,4 +321,6 @@
             android:layout_marginTop="0dp" />
 
     </LinearLayout>
+
+
 </RelativeLayout>

@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -194,6 +198,15 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            barZomm.setBackgroundColor(Color.argb(((int) (0.8 * 255.0f)), 255, 233, 221));
+                            barAngleCamera.setBackgroundColor(Color.argb(((int) (0.8 * 255.0f)), 255, 233, 221));
+                        }
+                    });
+
+
                     getZoomMethod(i);
                 }
 
@@ -213,6 +226,14 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            barZomm.setBackgroundColor(Color.argb(((int) (0.8 * 255.0f)), 255, 233, 221));
+                            barAngleCamera.setBackgroundColor(Color.argb(((int) (0.8 * 255.0f)), 255, 233, 221));
+                        }
+                    });
                     getChangeAngleCamera(i);
 
                 }
@@ -251,6 +272,24 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
             btnAterrizar.setOnClickListener(this);
             btnAterrizarForzado.setOnClickListener(this);
 
+
+            barZomm.setRotation(90);
+            barZomm.setX(430);
+            barZomm.setY(475);
+
+            barAngleCamera.setRotation(90);
+            barAngleCamera.setX(340);
+            barAngleCamera.setY(475);
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    barZomm.setBackgroundColor(Color.argb(((int) (0.2 * 255.0f)), 255, 233, 221));
+                    barAngleCamera.setBackgroundColor(Color.argb(((int) (0.2 * 255.0f)), 255, 233, 221));
+                }
+            });
+            /*barZomm.getBackground().setAlpha(50);
+            barAngleCamera.getBackground().setAlpha(50);*/
           /*  JoystickUp = (Button)findViewById(R.id.btnUpController);
             //JoystickDown = (Button)findViewById(R.id.directionJoystickRight);*/
 
@@ -260,6 +299,14 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
 
     }
 
+    public int convertDpToPixels(float dp, Context context) {
+        Resources resources = context.getResources();
+        return (int) android.util.TypedValue.applyDimension(
+                android.util.TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                resources.getDisplayMetrics()
+        );
+    }
 
     @Override
     public void onClick(View v) {
@@ -274,6 +321,13 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
         }
 
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                barZomm.setBackgroundColor(Color.argb(((int) (0.2 * 255.0f)), 255, 233, 221));
+                barAngleCamera.setBackgroundColor(Color.argb(((int) (0.2 * 255.0f)), 255, 233, 221));
+            }
+        });
         switch (v.getId()) {
             case R.id.btnRestartAngle:
                 getRestartBtnMethod();
@@ -312,23 +366,58 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
                 });
                 break;
             case R.id.btnInitMissionCross:
-                btnInitiMissionCross.setText("Cancelar Misión");
-                if (UtilsSharedCamera.InMission) {
-                    UtilsSharedCamera.InMission = false;
-                    btnInitiMissionCross.setText("Iniciar Misión");
-                    Utils.setResultToToast(this, "Se canceló la mision correctamente");
-                    return;
+                showSettingDialog();
+                break;
+            case R.id.texture_video_previewer_surface:
 
-                }
-                // btnInitiMissionCross.setText("Iniciar Misión");
-                utilsCamera.txtProgressFetchImage = txtZoom;
-                utilsCamera.txtUpdateGrades = txtAnguloCamara;
-                UtilsSharedCamera.InMission = true;
-                utilsCamera.InitMissionCross();
                 break;
 
 
         }
+    }
+
+    private void InitMissionCross(double metersDistance) {
+        btnInitiMissionCross.setText("Cancelar Misión");
+        if (UtilsSharedCamera.InMission) {
+            UtilsSharedCamera.InMission = false;
+            btnInitiMissionCross.setText("Iniciar Misión");
+            Utils.setResultToToast(this, "Se canceló la mision correctamente");
+            return;
+
+        }
+        // btnInitiMissionCross.setText("Iniciar Misión");
+        utilsCamera.txtProgressFetchImage = txtZoom;
+        utilsCamera.txtUpdateGrades = txtAnguloCamara;
+        UtilsSharedCamera.InMission = true;
+        utilsCamera.metersMissionCross = metersDistance;
+        utilsCamera.InitMissionCross();
+    }
+
+    private void showSettingDialog() {
+        LinearLayout settingsDistance = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_configdistance, null);
+
+        final TextView txtDistanceConfig = (TextView) settingsDistance.findViewById(R.id.altitude);
+
+
+        new AlertDialog.Builder(this)
+                .setTitle("")
+                .setView(settingsDistance)
+                .setPositiveButton("Empezar Misión", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        String distanceString = txtDistanceConfig.getText().toString();
+                        InitMissionCross(Double.parseDouble(distanceString));
+                    }
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+
+                })
+                .create()
+                .show();
     }
 
     float downX;
@@ -359,6 +448,8 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
                 isUniqueImage = false;
                 downX = event.getX();
                 downY = event.getY();
+
+
                 break;
             case MotionEvent.ACTION_MOVE:
                 isUniqueImage = true;
@@ -459,8 +550,8 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
 
                 } else {
 
-                    utilsCamera.widthCrop = -1;
-                    getClickPhotoMethod();
+                    //utilsCamera.widthCrop = -1;
+                    //getClickPhotoMethod();
                 }
                 break;
             default:
