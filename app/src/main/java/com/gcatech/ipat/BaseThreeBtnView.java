@@ -84,7 +84,7 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
 
     public static UtilsSharedCamera utilsCamera = new UtilsSharedCamera();
 
-    private DJIMobileRemoteController mobileRemoteController;
+    public DJIMobileRemoteController mobileRemoteController;
 
     private utils.OnButtonTouchListenerJoystick ListenerJoystickLeft;
     private utils.OnButtonTouchListenerJoystick ListenerJoystickRight;
@@ -366,7 +366,19 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
                 });
                 break;
             case R.id.btnInitMissionCross:
-                showSettingDialog();
+                if(utilsCamera.adminMovements==null || !utilsCamera.adminMovements.IsEnabled) {
+                    showSettingDialog();
+                }else {
+                    if (UtilsSharedCamera.InMission) {
+                        utilsCamera.adminMovements.IsEnabled = false;
+                        UtilsSharedCamera.InMission = false;
+                        btnInitiMissionCross.setText("Iniciar Misión");
+                        Utils.setResultToToast(this, "Se canceló la mision correctamente");
+                        return;
+
+                    }
+
+                }
                 break;
             case R.id.texture_video_previewer_surface:
 
@@ -376,15 +388,9 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
         }
     }
 
-    private void InitMissionCross(double metersDistance) {
+    private void InitMissionCross(float metersDistance) {
         btnInitiMissionCross.setText("Cancelar Misión");
-        if (UtilsSharedCamera.InMission) {
-            UtilsSharedCamera.InMission = false;
-            btnInitiMissionCross.setText("Iniciar Misión");
-            Utils.setResultToToast(this, "Se canceló la mision correctamente");
-            return;
 
-        }
         // btnInitiMissionCross.setText("Iniciar Misión");
         utilsCamera.txtProgressFetchImage = txtZoom;
         utilsCamera.txtUpdateGrades = txtAnguloCamara;
@@ -406,7 +412,7 @@ public abstract class BaseThreeBtnView extends FragmentActivity implements View.
                     public void onClick(DialogInterface dialog, int id) {
 
                         String distanceString = txtDistanceConfig.getText().toString();
-                        InitMissionCross(Double.parseDouble(distanceString));
+                        InitMissionCross(Float.parseFloat(distanceString));
                     }
 
                 })

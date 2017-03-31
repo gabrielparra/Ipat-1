@@ -20,6 +20,8 @@ import android.util.DisplayMetrics;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gactech.admindron.EventExecutionListener;
+import com.gactech.admindron.MovementsDron;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.*;
@@ -473,7 +475,7 @@ public class UtilsSharedCamera extends Activity {
                     ((Activity) ctxUse).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            txtProgressFetchImage.setText("Act:" + ((int) currentGrades) + " Meta:" + ((int) gradesGo) +" Count Step:"+numberStep);
+                            txtProgressFetchImage.setText("Act:" + ((int) currentGrades) + " Meta:" + ((int) gradesGo) + " Count Step:" + numberStep);
                         }
                     });
 
@@ -492,16 +494,14 @@ public class UtilsSharedCamera extends Activity {
                                                     Utils.setResultToToast(ctxUse, "Finalizó correctamente la misión.");
                                                     BaseThreeBtnView.utilsCamera.FetchLastPhoto();
                                                 } else {
-                                                    if(numberStep==4)
-                                                    {
+                                                    if (numberStep == 4) {
                                                         final double currentGrades2 = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
                                                         initGrades = currentGrades2;
                                                     }
                                                     MoveFront();
                                                 }
 
-                                            }else
-                                            {
+                                            } else {
                                                 Utils.setResultToToast(ctxUse, "Error tomando foto: " + djiError.getDescription());
                                             }
                                         } catch (Exception exInter) {
@@ -536,8 +536,48 @@ public class UtilsSharedCamera extends Activity {
 
     private void RotateDron(int _numberGradesForRotate) {
 
-         ((BaseThreeBtnView) ctxUse).SetPositionHorizontalDronJoystickLeft(0.3f);
-         handlerInLeftMisionCross.postDelayed(runnableInLeftMissionCross, 10);
+        adminMovements.RotateDronToGrades(_numberGradesForRotate, new EventExecutionListener() {
+            @Override
+            public void EndExecute() {
+                DJIApplication.getProductInstance().getCamera().startShootPhoto(
+                        DJICameraSettingsDef.CameraShootPhotoMode.Single,
+                        new DJICommonCallbacks.DJICompletionCallback() {
+                            @Override
+                            public void onResult(DJIError djiError) {
+                                try {
+                                    if (null == djiError) {
+
+                                        //((BaseThreeBtnView) ctxUse).SetPositionHorizontalDronJoystickLeft(0);
+                                        if (numberStep == 7) {
+                                            InMission = false;
+                                            adminMovements.IsEnabled = false;
+                                            Utils.setResultToToast(ctxUse, "Finalizó correctamente la misión.");
+                                            BaseThreeBtnView.utilsCamera.FetchLastPhoto();
+                                        } else {
+                                            if (numberStep == 4) {
+                                                final double currentGrades2 = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
+                                                adminMovements.initGrades = currentGrades2;
+                                            }
+                                            MoveFront();
+                                        }
+
+                                    } else {
+                                        Utils.setResultToToast(ctxUse, "Error tomando foto: " + djiError.getDescription());
+                                    }
+                                } catch (Exception exInter) {
+                                    Utils.setResultToToast(ctxUse, "Error tomando foto: " + exInter.getMessage());
+                                }
+
+                            }
+                        }
+                );
+            }
+        });
+
+        //((BaseThreeBtnView) ctxUse).SetPositionHorizontalDronJoystickLeft(0.3f);
+        //handlerInLeftMisionCross.postDelayed(runnableInLeftMissionCross, 10);
+
+
        /* DJIGimbal gimbal = ((DJIAircraft) DJIApplication.getAircraftInstance()).getGimbal();
         DJIGimbalAngleRotation YawRotation = new DJIGimbalAngleRotation(true, _numberGradesForRotate, DJIGimbalRotateDirection.Clockwise);
 
@@ -613,7 +653,7 @@ public class UtilsSharedCamera extends Activity {
                     ((Activity) ctxUse).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            txtProgressFetchImage.setText(metersTraveled + " Metros recorridos __ grados:" + initGrades + " Count Step: "+numberStep);
+                            txtProgressFetchImage.setText(metersTraveled + " Metros recorridos __ grados:" + initGrades + " Count Step: " + numberStep);
                         }
                     });
                     handlerInfrontMisionCross.postDelayed(runnableInFrontMissionCross, 900);
@@ -626,14 +666,39 @@ public class UtilsSharedCamera extends Activity {
     };
 
 
-    public double metersMissionCross = 3;
+    public float metersMissionCross = 3;
     private double metersTraveled = 0;
     private double initGrades = 0;
+    public MovementsDron adminMovements = null;
 
     private void MoveFront() {
-        metersTraveled = 0;
-        handlerInfrontMisionCross.postDelayed(runnableInFrontMissionCross, 900);
-        ((BaseThreeBtnView) ctxUse).SetPositionVerticalDronJoystickRight(0.5f);
+
+
+        adminMovements.MoveFront(metersMissionCross, new EventExecutionListener() {
+            @Override
+            public void EndExecute() {
+                numberStep++;
+                numberGradesForRotate = 179;
+
+                if (numberStep == 4) {
+                    numberGradesForRotate = 89;
+                }
+
+                if (numberStep == 2 || numberStep == 6) {
+                    countRotates++;
+                    final double currentGrades = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
+                    adminMovements.initGrades = currentGrades;
+                    MoveFront();
+                } else {
+                    RotateDron(numberGradesForRotate);
+                }
+            }
+        });
+
+
+        // metersTraveled = 0;
+        //handlerInfrontMisionCross.postDelayed(runnableInFrontMissionCross, 900);
+        //((BaseThreeBtnView) ctxUse).SetPositionVerticalDronJoystickRight(0.5f);
     }
 
     public void InitMissionCross() {
@@ -644,7 +709,8 @@ public class UtilsSharedCamera extends Activity {
 
 
             if (InMission) {
-                initGrades = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
+                adminMovements = new MovementsDron(((BaseThreeBtnView) ctxUse).mobileRemoteController, ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController());
+                adminMovements.initGrades = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
 
                 MoveFront();
 
