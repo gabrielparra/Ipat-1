@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.Stack;
 
 import dji.sdk.base.DJIBaseProduct;
@@ -87,6 +89,22 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(DJIApplication.FLAG_CONNECTION_CHANGE);
         registerReceiver(mReceiver, filter);
 
+
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        if (getIntent().getExtras() != null) {
+
+            for (String key : getIntent().getExtras().keySet()) {
+                String value = getIntent().getExtras().getString(key);
+
+                if (key.equals("urlImage")) {
+                    IpatFirebaseInstanceIdService.urlImageNotificacion = value;
+                    Intent intent = new Intent(this, ShowImageFronNotification.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+        }
     }
 
     @Override

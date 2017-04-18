@@ -703,7 +703,7 @@ public class UtilsSharedCamera extends Activity {
 
     public void InitMissionCross() {
         try {
-            handlerUpdateGrades.postDelayed(runnableUpdateHandler, 250);
+            //handlerUpdateGrades.postDelayed(runnableUpdateHandler, 250);
             // final DJIFlightControllerCurrentState stateDron = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCurrentState();
             // locationInitDron = stateDron.getAircraftLocation();
 

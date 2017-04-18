@@ -34,6 +34,7 @@ public class MovementsDron {
 
     public void RotateDronToGrades(double gradesToRotate, EventExecutionListener _listenerExecution) {
         if (!IsRunning) {
+            SetPositionVerticalDronJoystickRight(0);
 
             listenerExecution = _listenerExecution;
             numberGradesForRotate = gradesToRotate;
@@ -86,6 +87,8 @@ public class MovementsDron {
 
     public void MoveFront(float _quantityMeters, EventExecutionListener _listenerExecution) {
         if (!IsRunning) {
+            SetPositionHorizontalDronJoystickLeft(0);
+
             listenerExecution = _listenerExecution;
             quantityMeters = _quantityMeters;
             IsRunning = true;
@@ -117,6 +120,7 @@ public class MovementsDron {
             } else {
                 //Se detiene el dron si se solicita cancelar el movimiento
                 SetPositionVerticalDronJoystickRight(0);
+
             }
 
         }

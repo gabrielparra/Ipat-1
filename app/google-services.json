@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "830147234380",
+    "firebase_url": "https://dronipat-a6792.firebaseio.com",
+    "project_id": "dronipat-a6792",
+    "storage_bucket": "dronipat-a6792.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830147234380:android:7748743e1a205918",
+        "android_client_info": {
+          "package_name": "com.gcatech.ipat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "830147234380-213km2kb2dhb6soprb6uf6kbsp7561ns.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gcatech.ipat",
+            "certificate_hash": "7820b35a5b59592361450f4559a62f33305ef9c2"
+          }
+        },
+        {
+          "client_id": "830147234380-j97bmfnjt1uhbsk3gtjieemtaqb3jboc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDd0hfCJHresIT_JlBYVMuBwKcjuwyTOlQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "830147234380-j97bmfnjt1uhbsk3gtjieemtaqb3jboc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

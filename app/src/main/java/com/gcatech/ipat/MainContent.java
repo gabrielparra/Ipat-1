@@ -53,6 +53,15 @@ public class MainContent extends RelativeLayout implements DJIBaseProduct.DJIVer
     }
 
     private void initUI() {
+        Button btnUpload = (Button)findViewById(R.id.btnUploadImages);
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+        Intent intent = new Intent(getContext(), UploadImages.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
+            }
+        });
         Log.v(TAG, "initUI");
 
         mTextConnectionStatus = (TextView) findViewById(R.id.text_connection_status);
