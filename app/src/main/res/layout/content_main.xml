@@ -1,57 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.gcatech.ipat.MainContent xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:clickable="true">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_connection_status"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
         android:gravity="center"
-        android:text="No esta conectado."
-        android:textColor="@android:color/black"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_connection_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:text="No esta conectado."
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
 
-       <Button
-        android:id="@+id/btn_open"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/text_connection_status"
-        android:background="@drawable/round_btn"
-        android:textAllCaps="false"
-        android:layout_marginTop="25dp"
-        android:text="Iniciar"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        />
+        <Button
+            android:id="@+id/btn_open"
+            android:layout_width="150dp"
+            android:layout_height="55dp"
+            android:layout_below="@id/text_connection_status"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:text="Iniciar"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
 
-    <Button
-        android:id="@+id/btnUploadImages"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/round_btn"
-        android:textAllCaps="false"
-        android:layout_marginTop="25dp"
-        android:text="Subir Imagenes"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        />
+        <Button
+            android:id="@+id/btnUploadImages"
+            android:layout_width="150dp"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:text="Subir Imágenes"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="450dp"
-        android:text="App Version 0.0.0.1"
-        android:textSize="15dp"
-        />
+        <Button
+            android:id="@+id/viewProcessedImages"
+            android:layout_width="150dp"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:text="Imágenes procesadas"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="450dp"
+            android:text="App Version 0.0.0.1"
+            android:textSize="15dp" />
+    </LinearLayout>
 </com.gcatech.ipat.MainContent>

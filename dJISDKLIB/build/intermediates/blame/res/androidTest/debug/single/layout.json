@@ -1,10 +1,10 @@
 [
     {
-        "merged": "K:\\Proyectos Personales\\Proyectos\\Droid Transito\\RepositorioGit\\Ipat\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\log_dialog_view.xml",
-        "source": "K:\\Proyectos Personales\\Proyectos\\Droid Transito\\RepositorioGit\\Ipat\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\layout\\log_dialog_view.xml"
+        "merged": "D:\\GCA\\Ipat\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\dialog_login.xml",
+        "source": "D:\\GCA\\Ipat\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\layout\\dialog_login.xml"
     },
     {
-        "merged": "K:\\Proyectos Personales\\Proyectos\\Droid Transito\\RepositorioGit\\Ipat\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\dialog_login.xml",
-        "source": "K:\\Proyectos Personales\\Proyectos\\Droid Transito\\RepositorioGit\\Ipat\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\layout\\dialog_login.xml"
+        "merged": "D:\\GCA\\Ipat\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\log_dialog_view.xml",
+        "source": "D:\\GCA\\Ipat\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\layout\\log_dialog_view.xml"
     }
 ]

@@ -62,6 +62,16 @@ public class MainContent extends RelativeLayout implements DJIBaseProduct.DJIVer
                 getContext().startActivity(intent);
             }
         });
+        Button btnViewProcessed = (Button)findViewById(R.id.viewProcessedImages);
+        btnViewProcessed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ShowProcessedImages.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
+            }
+        });
+
         Log.v(TAG, "initUI");
 
         mTextConnectionStatus = (TextView) findViewById(R.id.text_connection_status);

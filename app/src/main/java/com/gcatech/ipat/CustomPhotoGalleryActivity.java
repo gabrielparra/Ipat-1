@@ -19,10 +19,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-/**
- * Created by Javier on 17/4/2017.
- */
-
 public class CustomPhotoGalleryActivity extends Activity {
 
     private GridView grdImages;
@@ -42,10 +38,10 @@ public class CustomPhotoGalleryActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_gallery);
-        grdImages= (GridView) findViewById(R.id.grdImages);
-        btnSelect= (Button) findViewById(R.id.btnSelect);
+        grdImages = (GridView) findViewById(R.id.grdImages);
+        btnSelect = (Button) findViewById(R.id.btnSelect);
 
-        final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
+        final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
         final String orderBy = MediaStore.Images.Media._ID;
         @SuppressWarnings("deprecation")
         Cursor imagecursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
@@ -91,6 +87,7 @@ public class CustomPhotoGalleryActivity extends Activity {
             }
         });
     }
+
     @Override
     public void onBackPressed() {
         setResult(Activity.RESULT_CANCELED);
@@ -104,6 +101,7 @@ public class CustomPhotoGalleryActivity extends Activity {
 
     /**
      * This method used to set bitmap.
+     *
      * @param iv represented ImageView
      * @param id represented id
      */
@@ -128,6 +126,7 @@ public class CustomPhotoGalleryActivity extends Activity {
 
     /**
      * List adapter
+     *
      * @author tasol
      */
 
@@ -204,6 +203,7 @@ public class CustomPhotoGalleryActivity extends Activity {
 
     /**
      * Inner class
+     *
      * @author tasol
      */
     class ViewHolder {

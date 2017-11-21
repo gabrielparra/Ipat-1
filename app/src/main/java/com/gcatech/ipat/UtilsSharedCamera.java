@@ -3,58 +3,26 @@ package com.gcatech.ipat;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Path;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gactech.admindron.EventExecutionListener;
 import com.gactech.admindron.MovementsDron;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.*;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import dji.common.camera.DJICameraSettingsDef;
 import dji.common.error.DJICameraError;
 import dji.common.error.DJIError;
-import dji.common.flightcontroller.DJIFlightControllerCurrentState;
-import dji.common.flightcontroller.DJILocationCoordinate2D;
-import dji.common.flightcontroller.DJILocationCoordinate3D;
-import dji.common.flightcontroller.DJIVirtualStickYawControlMode;
-import dji.common.gimbal.DJIGimbalAngleRotation;
-import dji.common.gimbal.DJIGimbalCapabilityKey;
-import dji.common.gimbal.DJIGimbalControllerMode;
-import dji.common.gimbal.DJIGimbalRotateAngleMode;
-import dji.common.gimbal.DJIGimbalRotateDirection;
 import dji.common.util.DJICommonCallbacks;
-import dji.common.util.DJIParamMinMaxCapability;
-import dji.log.DJILogHelper;
 import dji.sdk.camera.DJIMedia;
 import dji.sdk.camera.DJIMediaManager;
-import dji.sdk.gimbal.DJIGimbal;
 import dji.sdk.products.DJIAircraft;
-import dji.sdk.util.Util;
-import utils.DJIDialog;
-
-/**
- * Created by jjoya on 4/3/2017.
- */
 
 public class UtilsSharedCamera extends Activity {
     public static boolean InMission = false;
@@ -165,30 +133,12 @@ public class UtilsSharedCamera extends Activity {
                                             public void onSuccess(final ArrayList<DJIMedia> djiMedias) {
                                                 try {
                                                     if (null != djiMedias) {
-
-
-                                                        /*for (int indexPhoto = 0; indexPhoto < djiMedias.size(); indexPhoto++) {
-                                                            if (lastMedia == null)
-                                                                lastMedia = djiMedias.get(indexPhoto);
-                                                            else {
-                                                                if (djiMedias.get(indexPhoto).mTimeCreated > lastMedia.mTimeCreated) {
-
-                                                                    lastMedia = djiMedias.get(indexPhoto);
-                                                                }
-                                                            }
-                                                        }*/
-
-                                                        djiMediasFecth = djiMedias;
-                                                        indexPhotoFecth = 0;
+                                                        djiMediasFetch = djiMedias;
+                                                        indexPhotoFetch = 0;
 
                                                         Utils.setResultToToast(ctxUse, "Se van a descargar las fotos");
-                                                        //Se intenta descargar la foto
                                                         DownloadMedia();
-
-
-                                                    } else
-
-                                                    {
+                                                    } else {
                                                         Utils.setResultToToast(ctxUse, "No hay archivos en la SD");
                                                         timerHandler.postDelayed(timerRunnable, ElpasedTimer);
                                                     }
@@ -202,7 +152,6 @@ public class UtilsSharedCamera extends Activity {
                                             public void onFailure(DJIError djiError) {
                                                 timerHandler.postDelayed(timerRunnable, ElpasedTimer);
                                                 Utils.setResultToToast(ctxUse, "Error: " + djiError.getDescription());
-
                                             }
                                         }
                                 );
@@ -222,7 +171,6 @@ public class UtilsSharedCamera extends Activity {
 
                                                 Utils.setResultToToast(ctxUse, "Error Asignando estado descarga:" + djiError.getDescription());
                                             }
-
                                             timerHandler.postDelayed(timerRunnable, ElpasedTimer);
                                         }
                                     }
@@ -243,25 +191,31 @@ public class UtilsSharedCamera extends Activity {
         }
     };
 
-    ArrayList<DJIMedia> djiMediasFecth;
-    int indexPhotoFecth = 0;
+    ArrayList<DJIMedia> djiMediasFetch;
+    int indexPhotoFetch = 0;
 
     private void DownloadMedia() {
 
-        if (indexPhotoFecth < djiMediasFecth.size()) {
-            lastMedia = djiMediasFecth.get(indexPhotoFecth);
-            indexPhotoFecth++;
+        File destDir = new File(Environment.getExternalStorageDirectory().getPath() + "/Ipat/");
+
+        if (indexPhotoFetch < djiMediasFetch.size()) {
+            lastMedia = djiMediasFetch.get(indexPhotoFetch);
+            indexPhotoFetch++;
+
             if (lastMedia != null) {
 
-                File destDir = new File(Environment.getExternalStorageDirectory().
-                        getPath() + "/DJI_IPAT_" + missionName + "/");
+                final String fileName = missionName + "__" + indexPhotoFetch;
+                final File missionFolder = new File(destDir, missionName);
+                if (!missionFolder.exists()) {
+                    missionFolder.mkdirs();
 
-                lastMedia.fetchMediaData(destDir, null, new DJIMediaManager.CameraDownloadListener<String>() {
-                    String str;
+                }
+
+                lastMedia.fetchMediaData(missionFolder, fileName, new DJIMediaManager.CameraDownloadListener<String>() {
 
                     @Override
                     public void onStart() {
-
+                        Log.e("onStart","Entra...");
                     }
 
                     @Override
@@ -271,53 +225,15 @@ public class UtilsSharedCamera extends Activity {
 
                     @Override
                     public void onProgress(long l, long l1) {
-                        //Progreso de la foto
                         if (IsCameraBussy() && dialogProgress != null) {
-
-                            Utils.setTextProgressDialog(ctxUse, dialogProgress, "Transfiriendo fotos : " + indexPhotoFecth + " / " + djiMediasFecth.size());
+                            Utils.setTextProgressDialog(ctxUse, dialogProgress, "Transfiriendo fotos : " + indexPhotoFetch + " / " + djiMediasFetch.size());
                         }
                     }
 
                     @Override
                     public void onSuccess(String s) {
-                        //Se Inicializa la camara para que pueda seguir tomando Fotos
-                        final String pathFinal = s;
-
-
-                        //Se verifica si la foto se debe recortar
-                        if (widthCrop > 0) {
-                            Bitmap imgSource = BitmapFactory.decodeFile(pathFinal);
-
-                            if (imgSource != null) {
-                                final android.net.Uri uri = Uri.parse(pathFinal);
-                                String urlNewFile = "crop_" + pathFinal.split("/")[pathFinal.split("/").length - 1];
-                                Bitmap imgDest = cropBitmap(imgSource);
-                                java.io.FileOutputStream out = null;
-                                try {
-                                    out = new java.io.FileOutputStream(Environment.getExternalStorageDirectory().
-                                            getPath() + "/DJI_IPAT_" + missionName + "/" + urlNewFile);
-                                    imgDest.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-                                    // PNG is a lossless format, the compression factor (100) is ignored
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    try {
-                                        if (out != null) {
-                                            out.close();
-                                        }
-                                    } catch (java.io.IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                //  imgView.setImageBitmap(selectedBitmap);
-
-
-                            } else {
-                                Utils.setResultToToast(ctxUse, "No se encontro la imagen Source");
-                            }
-                            imgSource.recycle();
-                        }
-
+                        Log.e("onSuccess","Entra...");
+                        Utils.setResultToToast(ctxUse,s);
                         DownloadMedia();
                     }
 
@@ -337,7 +253,7 @@ public class UtilsSharedCamera extends Activity {
             UtilsSharedCamera.InMission = false;
 
             //Se deben borrar los archivos de la SD del dron
-            DJIApplication.getProductInstance().getCamera().getMediaManager().deleteMedia(djiMediasFecth, new DJICommonCallbacks.DJICompletionCallbackWithTwoParam<ArrayList<DJIMedia>, DJICameraError>() {
+            DJIApplication.getProductInstance().getCamera().getMediaManager().deleteMedia(djiMediasFetch, new DJICommonCallbacks.DJICompletionCallbackWithTwoParam<ArrayList<DJIMedia>, DJICameraError>() {
                 @Override
                 public void onSuccess(ArrayList<DJIMedia> djiMedias, DJICameraError djiCameraError) {
 
@@ -361,46 +277,6 @@ public class UtilsSharedCamera extends Activity {
         Utils.setResultToToast(ctxUse, "Se capturó la foto correctamente");
     }
 
-    private Bitmap cropBitmap(Bitmap original) {
-       /* Bitmap croppedImage =*/
-        // original.setDensity(Bitmap.DENSITY_NONE);
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) ctxUse).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        int heightScreen = maxHeight;//displayMetrics.heightPixels;
-        int widthScreen = maxWidth;//displayMetrics.widthPixels;
-
-        int percentageWidth = (widthCrop * 100) / widthScreen;
-        int percentageHeight = (heightCrop * 100) / heightScreen;
-        int percentageX = (downXCrop * 100) / widthScreen;
-        int percentageY = (downYCrop * 100) / heightScreen;
-
-        return Bitmap.createBitmap(original, (original.getWidth() * percentageX) / 100, (original.getHeight() * percentageY) / 100, (original.getWidth() * percentageWidth) / 100, (original.getHeight() * percentageHeight) / 100);
-        /*
-        Canvas canvas = new Canvas(croppedImage);
-
-        Rect srcRect = new Rect(downXCrop, downYCrop, original.getWidth(), original.getHeight());
-        Rect dstRect = new Rect(0, 0, widthCrop, heightCrop);
-
-        int dx = (srcRect.width() - dstRect.width()) / 2;
-        int dy = (srcRect.height() - dstRect.height()) / 2;
-
-// If the srcRect is too big, use the center part of it.
-        //srcRect.inset(Math.max(0, dx), Math.max(0, dy));
-
-// If the dstRect is too big, use the center part of it.
-        //dstRect.inset(Math.max(0, -dx), Math.max(0, -dy));
-
-// Draw the cropped bitmap in the center
-        canvas.drawBitmap(original, srcRect, dstRect, null);
-
-        original.recycle();
-
-        return croppedImage;
- */
-    }
-
     private ProgressDialog dialogProgress = null;
 
     public void FetchLastPhoto() {
@@ -420,11 +296,8 @@ public class UtilsSharedCamera extends Activity {
                     dialogProgress = new ProgressDialog(ctxUse);
                     dialogProgress.setTitle("Transferencia");
                     dialogProgress.setMessage("Transfiriendo fotos por favor espere..");
-                    dialogProgress.setCancelable(true); // disable dismiss by tapping outside of the dialog
+                    dialogProgress.setCancelable(false); // disable dismiss by tapping outside of the dialog
                     dialogProgress.show();
-
-
-                    //timerRunnable.run();
 
                 } catch (Exception ex) {
                     SetCameraIsBussy(false);
@@ -443,7 +316,7 @@ public class UtilsSharedCamera extends Activity {
         @Override
         public void run() {
             if (txtUpdateGrades != null) {
-                final double currentGrades = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
+                final double currentGrades = DJIApplication.getAircraftInstance().getFlightController().getCompass().getHeading();
                 ((Activity) ctxUse).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -467,7 +340,7 @@ public class UtilsSharedCamera extends Activity {
                 if (InMission) {
 
                     ((BaseThreeBtnView) ctxUse).SetPositionHorizontalDronJoystickLeft(0);
-                    final double currentGrades = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
+                    final double currentGrades = DJIApplication.getAircraftInstance().getFlightController().getCompass().getHeading();
 
                     final double gradesGo = initGrades <= 0 ? initGrades + numberGradesForRotate : initGrades - numberGradesForRotate;
 
@@ -488,15 +361,13 @@ public class UtilsSharedCamera extends Activity {
                                         try {
                                             if (null == djiError) {
 
-                                                //((BaseThreeBtnView) ctxUse).SetPositionHorizontalDronJoystickLeft(0);
                                                 if (numberStep == 7) {
                                                     InMission = false;
                                                     Utils.setResultToToast(ctxUse, "Finalizó correctamente la misión.");
                                                     BaseThreeBtnView.utilsCamera.FetchLastPhoto();
                                                 } else {
                                                     if (numberStep == 4) {
-                                                        final double currentGrades2 = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
-                                                        initGrades = currentGrades2;
+                                                        initGrades = DJIApplication.getAircraftInstance().getFlightController().getCompass().getHeading();
                                                     }
                                                     MoveFront();
                                                 }
@@ -547,7 +418,6 @@ public class UtilsSharedCamera extends Activity {
                                 try {
                                     if (null == djiError) {
 
-                                        //((BaseThreeBtnView) ctxUse).SetPositionHorizontalDronJoystickLeft(0);
                                         if (numberStep == 7) {
                                             InMission = false;
                                             adminMovements.IsEnabled = false;
@@ -555,7 +425,7 @@ public class UtilsSharedCamera extends Activity {
                                             BaseThreeBtnView.utilsCamera.FetchLastPhoto();
                                         } else {
                                             if (numberStep == 4) {
-                                                final double currentGrades2 = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
+                                                final double currentGrades2 = DJIApplication.getAircraftInstance().getFlightController().getCompass().getHeading();
                                                 adminMovements.initGrades = currentGrades2;
                                             }
                                             MoveFront();
@@ -573,41 +443,6 @@ public class UtilsSharedCamera extends Activity {
                 );
             }
         });
-
-        //((BaseThreeBtnView) ctxUse).SetPositionHorizontalDronJoystickLeft(0.3f);
-        //handlerInLeftMisionCross.postDelayed(runnableInLeftMissionCross, 10);
-
-
-       /* DJIGimbal gimbal = ((DJIAircraft) DJIApplication.getAircraftInstance()).getGimbal();
-        DJIGimbalAngleRotation YawRotation = new DJIGimbalAngleRotation(true, _numberGradesForRotate, DJIGimbalRotateDirection.Clockwise);
-
-        Object key = DJIGimbalCapabilityKey.AdjustYaw;
-
-        Utils.setResultToToast(ctxUse,"Modo Yaw:" +  DJIApplication.
-                getAircraftInstance().getFlightController().
-                getYawControlMode().name());
-        DJIApplication.getAircraftInstance().getFlightController().
-                setYawControlMode(
-                        DJIVirtualStickYawControlMode.Angle
-                );
-        Utils.setResultToToast(ctxUse,"Modo Yaw:" +  DJIApplication.
-                getAircraftInstance().getFlightController().
-                getYawControlMode().name());
-
-        final Number minValue = ((DJIParamMinMaxCapability) (gimbal.gimbalCapability().get(key))).getMin();
-        final Number maxValue = ((DJIParamMinMaxCapability) (gimbal.gimbalCapability().get(key))).getMax();
-
-        gimbal.setCompletionTimeForControlAngleAction(1.2f);
-        gimbal.rotateGimbalByAngle(DJIGimbalRotateAngleMode.AbsoluteAngle, null, null, YawRotation, new DJICommonCallbacks.DJICompletionCallback() {
-            public void onResult(DJIError djiError) {
-                if (djiError != null) {
-                    Utils.setResultToToast(ctxUse, "Error Rotando Min:" + minValue + " Max:" + maxValue);
-                } else {
-                    Utils.setResultToToast(ctxUse, "Se completo la rotacion");
-                }
-            }
-        });
-        */
 
     }
 
@@ -637,7 +472,7 @@ public class UtilsSharedCamera extends Activity {
 
                     if (numberStep == 2 || numberStep == 6) {
                         countRotates++;
-                        final double currentGrades = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
+                        final double currentGrades = DJIApplication.getAircraftInstance().getFlightController().getCompass().getHeading();
                         initGrades = currentGrades;
                         MoveFront();
                     } else {
@@ -686,7 +521,7 @@ public class UtilsSharedCamera extends Activity {
 
                 if (numberStep == 2 || numberStep == 6) {
                     countRotates++;
-                    final double currentGrades = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
+                    final double currentGrades = DJIApplication.getAircraftInstance().getFlightController().getCompass().getHeading();
                     adminMovements.initGrades = currentGrades;
                     MoveFront();
                 } else {
@@ -695,22 +530,14 @@ public class UtilsSharedCamera extends Activity {
             }
         });
 
-
-        // metersTraveled = 0;
-        //handlerInfrontMisionCross.postDelayed(runnableInFrontMissionCross, 900);
-        //((BaseThreeBtnView) ctxUse).SetPositionVerticalDronJoystickRight(0.5f);
     }
 
     public void InitMissionCross() {
         try {
-            //handlerUpdateGrades.postDelayed(runnableUpdateHandler, 250);
-            // final DJIFlightControllerCurrentState stateDron = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCurrentState();
-            // locationInitDron = stateDron.getAircraftLocation();
-
 
             if (InMission) {
                 adminMovements = new MovementsDron(((BaseThreeBtnView) ctxUse).mobileRemoteController, ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController());
-                adminMovements.initGrades = ((DJIAircraft) DJIApplication.getAircraftInstance()).getFlightController().getCompass().getHeading();
+                adminMovements.initGrades = DJIApplication.getAircraftInstance().getFlightController().getCompass().getHeading();
 
                 MoveFront();
 

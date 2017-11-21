@@ -7,10 +7,6 @@ import dji.sdk.flightcontroller.DJIFlightController;
 import dji.sdk.mobilerc.DJIMobileRemoteController;
 import dji.sdk.products.DJIAircraft;
 
-/**
- * Created by jjoya on 30/3/2017.
- */
-
 public class MovementsDron {
 
     private EventExecutionListener listenerExecution;

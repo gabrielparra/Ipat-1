@@ -1,9 +1,11 @@
 package com.gcatech.ipat;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,7 +46,11 @@ public class DJIApplication extends Application {
         }
         return mProduct;
     }
-
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(context);
+        MultiDex.install(this);
+    }
     public static synchronized DJIBluetoothProductConnector getBluetoothProductConnector(){
         if(null == bluetoothConnector){
             bluetoothConnector = DJISDKManager.getInstance().getDJIBluetoothProductConnector();

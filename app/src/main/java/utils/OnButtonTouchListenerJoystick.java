@@ -7,10 +7,6 @@ import com.gcatech.ipat.BaseThreeBtnView;
 import com.gcatech.ipat.R;
 import com.gcatech.ipat.Utils;
 
-/**
- * Created by Javier Joya on 27/2/2017.
- */
-
 public class OnButtonTouchListenerJoystick implements View.OnTouchListener {
     private boolean IsJoystickLeft;
     private  String IdButton = "";

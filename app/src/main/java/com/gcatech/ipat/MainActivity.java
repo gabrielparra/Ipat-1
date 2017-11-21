@@ -90,20 +90,10 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mReceiver, filter);
 
 
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
-        if (getIntent().getExtras() != null) {
-
-            for (String key : getIntent().getExtras().keySet()) {
-                String value = getIntent().getExtras().getString(key);
-
-                if (key.equals("urlImage")) {
-                    IpatFirebaseInstanceIdService.urlImageNotificacion = value;
-                    Intent intent = new Intent(this, ShowImageFronNotification.class);
-                    startActivity(intent);
-                    finish();
-                }
-
-            }
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey("pnsNotification")) {
+            Intent intent = new Intent(this, ShowProcessedImages.class);
+            startActivity(intent);
         }
     }
 

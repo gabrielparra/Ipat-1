@@ -18,6 +18,8 @@
     <string name="increaseAngleCamera">Angulo Camara (+)</string>
     <string name="restartAngleCamera">Reiniciar Angulo</string>
     <string name="messageIsBusy">El dispositivo se encuentra ocupado,por favor espere.</string>
+    <string name="apiBaseUrl">http://186.80.236.219:8080/</string>
+    <string name="imagesApiUrl">http://186.80.236.219:8080/api/File</string>
 
 
     <!-- Component list -->
@@ -222,5 +224,11 @@
     <string name="sync_file_title">Sync file</string>
     <string name="sync_success">Sync file success</string>
     <string name="playback_disconnected">Disconnected</string>
+    <string name="title_activity_show_processed_images">ShowProcessedImages</string>
+    <string name="next">Next</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="seleccionar_fotos">Seleccionar Fotos</string>
 
 </resources>
